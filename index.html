@@ -1,0 +1,1024 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Plan comptable – Révisions</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eceff1;--card:#f8f9fa;--ink:#1c2733;--mute:#66737f;--line:#d3d9de;--acc:#2f4858;--on:#f8f9fa;--ok:#3d6b55;--ko:#94514f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171d23;--card:#1f2830;--ink:#e6eaee;--mute:#93a0ab;--line:#33404a;--acc:#9db8c8;--on:#14191e;--ok:#7fb59a;--ko:#d08e8b}}
+:root[data-theme="dark"]{--bg:#171d23;--card:#1f2830;--ink:#e6eaee;--mute:#93a0ab;--line:#33404a;--acc:#9db8c8;--on:#14191e;--ok:#7fb59a;--ko:#d08e8b}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Figtree,system-ui,sans-serif}
+main{max-width:520px;margin:0 auto;padding:32px 20px 56px}
+h1{font:500 30px/1.15 Newsreader,Georgia,serif;margin:0 0 8px}
+.sub{color:var(--mute);margin:0 0 24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px}
+.row{display:flex;align-items:center;gap:12px;margin-bottom:10px}.row span{width:64px;color:var(--mute);font-size:14px}
+input{flex:1;width:100%;box-sizing:border-box;font:inherit;font-size:16px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:11px 12px}
+input:focus,button:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+input.ko{border-color:var(--ko)}
+.btn{font:600 16px Figtree,sans-serif;background:var(--acc);color:var(--on);border:0;border-radius:8px;padding:12px 20px;cursor:pointer}
+.ghost,.link{font:500 15px Figtree,sans-serif;background:none;border:0;color:var(--mute);cursor:pointer;padding:12px}
+.link{margin-top:20px;padding-left:0}
+.msg{color:var(--ko);font-size:14px;min-height:20px;margin:6px 0 12px}
+.list{display:grid;gap:10px}
+.lvl{display:grid;grid-template-columns:1fr auto;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;cursor:pointer;color:var(--ink);font:inherit}
+.lvl .t{font:500 20px Newsreader,Georgia,serif}.lvl .d,.lvl .b{color:var(--mute);font-size:14px}.lvl .b{text-align:right;align-self:end}
+.top{display:flex;justify-content:space-between;color:var(--mute);font-size:14px;margin-bottom:8px}
+.bar{height:3px;background:var(--line);border-radius:2px;margin-bottom:20px}.bar i{display:block;height:100%;background:var(--acc);border-radius:2px}
+.lab{color:var(--mute);margin:0 0 6px}
+.big{font:500 26px/1.3 Newsreader,Georgia,serif;margin:0 0 18px}.big.num{font-size:44px;letter-spacing:.02em}
+.fb{margin:14px 0 0;padding:12px 14px;border-left:3px solid var(--line);background:var(--bg);border-radius:0 8px 8px 0}
+.fb.ok{border-color:var(--ok)}.fb.ko{border-color:var(--ko)}.fb b{display:block}
+.acts{display:flex;gap:8px;align-items:center;margin-top:16px}
+.score{font:500 52px/1 Newsreader,Georgia,serif;margin:4px 0 16px}
+.err{margin:0 0 6px;font-size:15px}.err b{font-weight:600}
+@media(prefers-reduced-motion:no-preference){.bar i{transition:width .3s}}
+.lvl[disabled]{opacity:.55;cursor:default}
+.sm{font-size:14px;padding:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.chip{font:500 14px Figtree,sans-serif;background:none;color:var(--mute);border:1px solid var(--line);border-radius:16px;padding:5px 12px;cursor:pointer}
+.chip.on{background:var(--acc);color:var(--on);border-color:var(--acc)}
+.days{display:flex;gap:4px;align-items:flex-end;height:70px;margin:8px 0 18px}
+.day{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;color:var(--mute);font-size:11px}
+.day i{display:block;width:100%;background:var(--acc);border-radius:2px 2px 0 0;opacity:.8}
+.day.none i{height:2px!important;background:var(--line)}
+.srow{display:grid;grid-template-columns:auto 1fr auto;gap:2px 12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.srow .sn{font:500 17px Newsreader,Georgia,serif}.srow .sp{font-weight:600}.srow small{grid-column:2/4;color:var(--mute)}
+.kpi{display:flex;gap:24px;margin:0 0 6px}.kpi b{display:block;font:500 28px Newsreader,Georgia,serif}.kpi span{color:var(--mute);font-size:14px}
+.nav{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:-12px 0 24px}
+.nav button{font:500 15px Figtree,sans-serif;background:none;border:0;border-bottom:2px solid transparent;color:var(--mute);padding:10px 12px;cursor:pointer}
+.nav button.on{color:var(--ink);border-color:var(--acc)}
+.card.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,var(--card))}
+.card.ko{border-color:var(--ko);background:color-mix(in srgb,var(--ko) 14%,var(--card))}
+.fb .v{font:600 20px Figtree,sans-serif;margin-bottom:4px}.fb.ok .v{color:var(--ok)}.fb.ko .v{color:var(--ko)}
+.tm{height:4px;background:var(--line);border-radius:2px;margin:0 0 18px}.tm i{display:block;height:100%;width:100%;background:var(--acc);border-radius:2px}
+.tip{min-height:22px;color:var(--mute);font-size:14px;margin:0 0 14px}
+.srow small.ac{color:var(--acc)}
+.add{display:grid;gap:8px;margin-bottom:18px}
+.day{cursor:pointer}.days{height:90px;gap:2px}.day small{font-size:9px}
+</style></head><body><main id="app"></main>
+<script>
+const D={
+2:`10|Capital et réserves
+11|Report à nouveau
+12|Résultat de l’exercice
+13|Subventions d’investissement
+14|Provisions réglementées
+15|Provisions
+16|Emprunts et dettes assimilées, fonds non remboursables et avances conditionnées
+17|Dettes rattachées à des participations
+18|Comptes de liaison des établissements et sociétés en participation
+20|Immobilisations incorporelles et frais d’établissement
+21|Immobilisations corporelles
+22|Immobilisations mises en concession
+23|Immobilisations en cours, avances et acomptes
+26|Participations et créances rattachées à des participations
+27|Autres immobilisations financières
+28|Amortissements des immobilisations
+29|Dépréciations des immobilisations
+31|Matières premières et fournitures
+32|Autres approvisionnements
+33|En-cours de production de biens
+34|En-cours de production de services
+35|Stocks de produits
+36|Le cas échéant, « Stocks provenant d’immobilisations »
+37|Stocks de marchandises
+38|À disposition pour, « Stocks en voie d’acheminement, mis en dépôt ou donnés en consignation »
+39|Dépréciations des stocks et en-cours
+40|Fournisseurs et comptes rattachés
+41|Clients et comptes rattachés
+42|Personnel et comptes rattachés
+43|Sécurité sociale et autres organismes sociaux
+44|État et autres collectivités publiques
+45|Groupe et associés
+46|Débiteurs divers et créditeurs divers
+47|Comptes transitoires ou d’attente
+48|Comptes de régularisation
+49|Dépréciations des comptes de tiers
+50|Valeurs mobilières de placement
+51|Banques, établissements financiers et assimilés
+52|Instruments financiers à terme et jetons détenus
+53|Caisse
+58|Virements internes
+59|Dépréciations des comptes financiers
+60|Achats (sauf 603)
+61|Services extérieurs
+62|Autres services extérieurs
+63|Impôts, taxes et versements assimilés
+64|Charges de personnel
+65|Autres charges de gestion courante
+66|Charges financières
+67|Charges exceptionnelles
+68|Dotations aux amortissements, aux dépréciations et aux provisions
+69|Participation des salariés - Impôts sur les bénéfices et assimilés
+70|Ventes de produits fabriqués, prestations de services, marchandises
+71|Production stockée (ou déstockage)
+72|Production immobilisée
+74|Subventions
+75|Autres produits de gestion courante
+76|Produits financiers
+77|Produits exceptionnels
+78|Reprises sur amortissements, dépréciations et provisions`,
+3:`101|Capital
+102|Fonds fiduciaires
+104|Primes liées au capital
+105|Écarts de réévaluation
+106|Réserves
+107|Écart d’équivalence
+108|Compte de l’exploitant
+109|Actionnaires : capital souscrit - non appelé
+110|Report à nouveau - solde créditeur
+119|Report à nouveau - solde débiteur
+120|Résultat de l’exercice - bénéfice
+129|Résultat de l’exercice – perte
+131|Subventions d’investissement octroyées
+139|Subventions d’investissement inscrites au compte de résultat
+143|Provisions réglementées pour hausse de prix
+145|Amortissements dérogatoires
+148|Autres provisions réglementées
+151|Provisions pour risques
+152|Provisions pour charges
+161|Emprunts obligataires convertibles
+162|Obligations représentatives de passifs nets remis en fiducie
+163|Autres emprunts obligataires
+164|Emprunts auprès des établissements de crédit
+165|Dépôts et cautionnements reçus
+166|Participation des salariés aux résultats|Emprunts et dettes assimilées, fonds non remboursables et avances conditionnées
+167|Fonds non remboursables et avances conditionnées
+168|Autres emprunts et dettes assimilées
+169|Primes de remboursement des emprunts
+171|Dettes rattachées à des participations - groupe
+174|Dettes rattachées à des participations - hors groupe
+178|Dettes rattachées à des sociétés en participation
+181|Comptes de liaison des établissements
+186|Biens et prestations de services échangés entre établissements - charges
+187|Biens et prestations de services échangés entre établissements - produits
+188|Comptes de liaison des sociétés en participation
+201|Frais d’établissement
+203|Frais de développement
+205|Concessions et droits similaires, brevets, licences, marques, procédés, solutions informatiques, droits et valeurs similaires
+206|Droit au bail
+207|Fonds commercial
+208|Autres immobilisations incorporelles
+211|Terrains
+212|Agencements et aménagements de terrains
+213|Constructions
+214|Constructions sur sol d’autrui
+215|Installations techniques, matériels et outillages industriels
+218|Autres immobilisations corporelles
+229|Droits du concédant (présentés dans la rubrique autres fonds propres)
+231|Immobilisations corporelles en cours
+232|Immobilisations incorporelles en cours
+237|Avances et acomptes versés sur commandes d’immobilisations incorporelles
+238|Avances et acomptes versés sur commandes d’immobilisations corporelles
+261|Titres de participation
+262|Titres évalués par équivalence
+266|Autres formes de participation
+267|Créances rattachées à des participations
+268|Créances rattachées à des sociétés en participation
+269|Versements restant à effectuer sur titres de participation non libérés
+271|Titres immobilisés autres que les titres immobilisés de l’activité de portefeuille (droit de propriété)
+272|Titres immobilisés (droit de créance)
+273|Titres immobilisés de l’activité de portefeuille
+274|Prêts
+275|Dépôts et cautionnements versés
+276|Autres créances immobilisées
+277|Actions propres ou parts propres
+278|Mali de fusion sur actifs financiers
+279|Versements restant à effectuer sur titres immobilisés non libérés
+280|Amortissements des immobilisations incorporelles et des frais d’établissement
+281|Amortissements des immobilisations corporelles
+282|Amortissements des immobilisations mises en concession
+290|Dépréciations des immobilisations incorporelles
+291|Dépréciations des immobilisations corporelles
+292|Dépréciations des immobilisations mises en concession
+293|Dépréciations des immobilisations en cours
+296|Dépréciations des participations et créances rattachées à des participations
+297|Dépréciations des autres immobilisations financières
+321|Matières consommables
+322|Fournitures consommables
+326|Emballages
+331|Produits en cours
+335|Travaux en cours
+341|Études en cours
+345|Prestations de services en cours
+351|Produits intermédiaires
+355|Produits finis
+358|Produits résiduels ou matières de récupération
+391|Dépréciations des matières premières et fournitures
+392|Dépréciations des autres approvisionnements
+393|Dépréciations des en-cours de production de biens
+394|Dépréciations des en-cours de production de services
+395|Dépréciations des stocks de produits
+397|Dépréciations des stocks de marchandises
+401|Fournisseurs
+403|Fournisseurs - Effets à payer
+404|Fournisseurs d’immobilisations
+405|Fournisseurs d’immobilisations - Effets à payer
+408|Fournisseurs - Factures non parvenues
+409|Fournisseurs débiteurs
+411|Clients
+413|Clients - Effets à recevoir
+416|Clients douteux ou litigieux
+418|Clients - Produits non encore facturés
+419|Clients créditeurs
+421|Personnel - Rémunérations dues
+422|Comité social et économique
+424|Participation des salariés aux résultats|Personnel et comptes rattachés
+425|Personnel - Avances et acomptes et autres comptes débiteurs
+426|Personnel - Dépôts
+427|Personnel - Oppositions
+428|Personnel - Charges à payer
+431|Sécurité sociale
+437|Autres organismes sociaux
+438|Organismes sociaux - Charges à payer
+439|Organismes sociaux - Produits à recevoir
+441|État - Subventions et aides à recevoir
+442|Contributions, impôts et taxes recouvrés pour le compte de l’État
+444|État - Impôts sur les bénéfices
+445|État - Taxes sur le chiffre d’affaires
+446|Obligations cautionnées
+447|Autres impôts, taxes et versements assimilés
+448|État - Charges à payer et produits à recevoir
+449|Quotas d’émission à acquérir
+451|Groupe
+455|Associés - Comptes courants
+456|Associés - Opérations sur le capital
+457|Associés - Dividendes à payer
+458|Associés - Opérations faites en commun et en GIE
+462|Créances sur cessions d’immobilisations
+464|Dettes sur acquisitions de valeurs mobilières de placement
+465|Créances sur cessions de valeurs mobilières de placement
+467|Divers comptes débiteurs et produits à recevoir
+468|Divers comptes créditeurs et charges à payer
+471|Comptes d’attente
+472|Comptes d’attente
+473|Comptes d’attente
+474|Différences d’évaluation – Actif
+475|Différences d’évaluation – Passif
+476|Différence de conversion - Actif
+477|Différences de conversion - Passif
+478|Autres comptes transitoires
+481|Frais d’émission des emprunts
+486|Charges constatées d’avance
+487|Produits constatés d’avance
+488|Comptes de répartition périodique des charges et des produits
+491|Dépréciations des comptes de clients
+495|Dépréciations des comptes du groupe et des associés
+496|Dépréciations des comptes de débiteurs divers
+502|Actions propres
+503|Actions
+504|Autres titres conférant un droit de propriété
+505|Obligations et bons émis par la société et rachetés par elle
+506|Obligations
+507|Bons du Trésor et bons de caisse à court terme
+508|Autres valeurs mobilières de placement et autres créances assimilées
+509|Versements restant à effectuer sur valeurs mobilières de placement non libérées
+511|Valeurs à l’encaissement
+512|Banques
+517|Autres organismes financiers
+518|Intérêts courus
+519|Concours bancaires courants
+521|Instruments financiers à terme
+522|Jetons détenus
+523|Jetons auto-détenus
+524|Jetons empruntés
+590|Dépréciations des valeurs mobilières de placement
+601|Achats stockés - Matières premières et fournitures
+602|Achats stockés - Autres approvisionnements
+603|Variation des stocks d’approvisionnements et de marchandises
+604|Achats d’études et prestations de services
+605|Achats de matériel, équipements et travaux
+606|Achats non stockés de matière et fournitures
+607|Achats de marchandises
+608|Le cas échéant, « Regroupement des frais accessoires incorporés aux achats »
+609|Rabais, remises et ristournes obtenus sur achats
+611|Sous-traitance générale
+612|Redevances de crédit-bail
+613|Locations
+614|Charges locatives et de copropriété
+615|Entretien et réparation
+616|Primes d’assurances
+617|Études et recherches
+618|Divers|Services extérieurs
+619|Rabais, remises et ristournes obtenus sur services extérieurs
+621|Personnel extérieur à l’entité
+622|Rémunérations d’intermédiaires et honoraires
+623|Publicité, publications, relations publiques
+624|Transports de biens et transports collectifs du personnel
+625|Déplacements, missions et réceptions
+626|Frais postaux et de télécommunications
+627|Services bancaires et assimilés
+628|Divers|Autres services extérieurs
+629|Rabais, remises et ristournes obtenus sur autres services extérieurs
+631|Impôts, taxes et versements assimilés sur rémunérations (administrations des impôts)
+633|Impôts, taxes et versements assimilés sur rémunérations (autres organismes)
+635|Autres impôts, taxes et versements assimilés (administrations des impôts)
+637|Autres impôts, taxes et versements assimilés (autres organismes)
+638|Rappel d’impôts (autres qu’impôts sur les bénéfices)
+641|Rémunérations du personnel
+644|Rémunération du travail de l’exploitant
+645|Cotisations de sécurité sociale et de prévoyance
+646|Cotisations sociales personnelles de l’exploitant
+647|Autres cotisations sociales
+648|Autres charges de personnel
+649|Remboursements de charges de personnel
+651|Redevances pour concessions, brevets, licences, marques, procédés, solutions informatiques, droits et valeurs similaires|Autres charges de gestion courante
+653|Rémunérations de l’activité des administrateurs et des gérants|Autres charges de gestion courante
+654|Pertes sur créances irrécouvrables
+655|Quote-part de résultat sur opérations faites en commun|Autres charges de gestion courante
+656|Pertes de change sur créances et dettes commerciales
+657|Valeurs comptables des immobilisations incorporelles et corporelles cédées
+658|Pénalités et autres charges
+661|Charges d’intérêts
+664|Pertes sur créances liées à des participations
+665|Escomptes accordés
+666|Pertes de change financières
+667|Charges sur cession d’éléments financiers
+668|Autres charges financières
+672|À la disposition des entités, en cours d’exercice, « Charges sur exercices antérieurs »
+678|Autres charges exceptionnelles
+681|Dotations aux amortissements, aux dépréciations et aux provisions (à inscrire dans les charges d’exploitation)
+686|Dotations aux amortissements, aux dépréciations et aux provisions (à inscrire dans les charges financières)
+687|Dotations aux amortissements, aux dépréciations et aux provisions (à inscrire dans les charges exceptionnelles)
+691|Participation des salariés aux résultats|Participation des salariés - Impôts sur les bénéfices et assimilés
+695|Impôts sur les bénéfices
+696|Suppléments d’impôt sur les sociétés liés aux distributions
+698|Intégration fiscale
+699|Produits - Reports en arrière des déficits
+701|Ventes de produits finis
+702|Ventes de produits intermédiaires
+703|Ventes de produits résiduels
+704|Travaux
+705|Études
+706|Prestations de services
+707|Ventes de marchandises
+708|Produits des activités annexes
+709|Rabais, remises et ristournes accordés
+713|Variation des stocks des en-cours de production et de produits
+721|Immobilisations incorporelles
+722|Immobilisations corporelles
+741|Subventions d’exploitation
+742|Subventions d’équilibre
+747|Quote-part des subventions d’investissement virée au résultat de l’exercice
+751|Redevances pour concessions, brevets, licences, marques, procédés, solutions informatiques, droits et valeurs similaires|Autres produits de gestion courante
+752|Revenus des immeubles non affectés à des activités professionnelles
+753|Rémunérations de l’activité des administrateurs et des gérants|Autres produits de gestion courante
+754|Ristournes perçues des coopératives provenant des excédents
+755|Quote-part de résultat sur opérations faites en commun|Autres produits de gestion courante
+756|Gains de change sur créances et dettes commerciales
+757|Produits des cessions d’immobilisations incorporelles et corporelles
+758|Indemnités et autres produits
+761|Produits de participations
+762|Produits des autres immobilisations financières
+763|Revenus des autres créances
+764|Revenus des valeurs mobilières de placement
+765|Escomptes obtenus
+766|Gains de change financiers
+767|Produits sur cession d’éléments financiers
+768|Autres produits financiers
+772|À la disposition des entités, en cours d’exercice, « Produits sur exercices antérieurs »
+778|Autres produits exceptionnels
+781|Reprises sur amortissements, dépréciations et provisions (à inscrire dans les produits d’exploitation)
+786|Reprises sur dépréciations et provisions (à inscrire dans les produits financiers)
+787|Reprises sur dépréciations et provisions (à inscrire dans les produits exceptionnels)`,
+4:`1011|Capital souscrit - non appelé
+1012|Capital souscrit - appelé, non versé
+1013|Capital souscrit - appelé, versé
+1018|Capital souscrit soumis à des réglementations particulières
+1041|Primes d’émission
+1042|Primes de fusion
+1043|Primes d’apport
+1044|Primes de conversion d’obligations en actions
+1045|Bons de souscription de titres en capital
+1061|Réserve légale
+1062|Réserves indisponibles
+1063|Réserves statutaires ou contractuelles
+1064|Réserves réglementées
+1068|Autres réserves
+1209|Acomptes sur dividendes
+1511|Provisions pour litiges
+1512|Provisions pour garanties données aux clients
+1514|Provisions pour amendes et pénalités
+1515|Provisions pour pertes de change
+1516|Provisions pour pertes sur contrats
+1518|Autres provisions pour risques
+1521|Provisions pour pensions et obligations similaires
+1522|Provisions pour restructurations
+1523|Provisions pour impôts
+1524|Provisions pour renouvellement des immobilisations - entreprises concessionnaires
+1525|Provisions pour gros entretien ou grandes révisions
+1526|Provisions pour remise en état
+1527|Autres provisions pour charges
+1618|Intérêts courus sur emprunts obligataires convertibles
+1638|Intérêts courus sur autres emprunts obligataires
+1648|Intérêts courus sur emprunts auprès des établissements de crédit
+1651|Dépôts|Dépôts et cautionnements reçus
+1655|Cautionnements|Dépôts et cautionnements reçus
+1658|Intérêts courus sur dépôts et cautionnements reçus
+1661|Comptes bloqués
+1662|Fonds de participation
+1668|Intérêts courus sur participation des salariés aux résultats
+1671|Fonds non remboursables montant principal
+1673|Avances conditionnées montant principal
+1674|Avances conditionnées intérêts courus
+1681|Autres emprunts
+1682|Emprunts participatifs
+1685|Rentes viagères capitalisées
+1687|Autres dettes
+1688|Intérêts courus sur autres emprunts et dettes assimilées
+2011|Frais de constitution
+2012|Frais de premier établissement
+2013|Frais d’augmentation de capital et d’opérations diverses - fusions, scissions, transformations
+2081|Mali de fusion sur actifs incorporels
+2111|Terrains nus
+2112|Terrains aménagés
+2113|Sous-sols et sur-sols
+2114|Terrains de carrières (Tréfonds)
+2115|Terrains bâtis
+2131|Bâtiments
+2135|Installations générales - agencements - aménagements des constructions
+2138|Ouvrages d’infrastructure
+2151|Installations complexes spécialisées
+2153|Installations à caractère spécifique
+2154|Matériels industriels
+2155|Outillages industriels
+2157|Agencements et aménagements des matériels et outillages industriels
+2181|Installations générales, agencements, aménagements divers
+2182|Matériel de transport
+2183|Matériel de bureau et matériel informatique
+2184|Mobilier
+2185|Cheptel
+2186|Emballages récupérables
+2187|Mali de fusion sur actifs corporels
+2611|Actions|Titres de participation
+2618|Autres titres|Titres de participation
+2661|Droits représentatifs d’actifs nets remis en fiducie
+2671|Créances rattachées à des participations - groupe
+2674|Créances rattachées à des participations - hors groupe
+2675|Versements représentatifs d’apports non capitalisés - appel de fonds
+2676|Avances consolidables
+2677|Autres créances rattachées à des participations
+2678|Intérêts courus|Créances rattachées à des participations
+2681|Principal|Créances rattachées à des sociétés en participation
+2688|Intérêts courus|Créances rattachées à des sociétés en participation
+2711|Actions|Titres immobilisés autres que les titres immobilisés de l’activité de portefeuille (droit de propriété)
+2718|Autres titres|Titres immobilisés autres que les titres immobilisés de l’activité de portefeuille (droit de propriété)
+2721|Obligations|Titres immobilisés (droit de créance)
+2722|Bons
+2741|Prêts participatifs
+2742|Prêts aux associés
+2743|Prêts au personnel
+2748|Autres prêts
+2751|Dépôts|Dépôts et cautionnements versés
+2755|Cautionnements|Dépôts et cautionnements versés
+2761|Créances diverses
+2768|Intérêts courus|Autres créances immobilisées
+2771|Actions propres ou parts propres
+2772|Actions propres ou parts propres en voie d’annulation
+2801|Frais d’établissement|Amortissements des immobilisations incorporelles et des frais d’établissement
+2803|Frais de développement|Amortissements des immobilisations incorporelles et des frais d’établissement
+2805|Concessions et droits similaires, brevets, licences, solutions informatiques, droits et valeurs similaires
+2806|Droit au bail|Amortissements des immobilisations incorporelles et des frais d’établissement
+2807|Fonds commercial|Amortissements des immobilisations incorporelles et des frais d’établissement
+2808|Autres immobilisations incorporelles|Amortissements des immobilisations incorporelles et des frais d’établissement
+2812|Agencements, aménagements de terrains
+2813|Constructions|Amortissements des immobilisations corporelles
+2814|Constructions sur sol d’autrui|Amortissements des immobilisations corporelles
+2815|Installations, matériel et outillage industriels
+2818|Autres immobilisations corporelles|Amortissements des immobilisations corporelles
+2901|Frais d’établissement|Dépréciations des immobilisations incorporelles
+2903|Frais de développement|Dépréciations des immobilisations incorporelles
+2905|Marques, procédés, droits et valeurs similaires
+2906|Droit au bail|Dépréciations des immobilisations incorporelles
+2907|Fonds commercial|Dépréciations des immobilisations incorporelles
+2908|Autres immobilisations incorporelles|Dépréciations des immobilisations incorporelles
+2911|Terrains
+2912|Agencements et aménagements de terrains
+2913|Constructions|Dépréciations des immobilisations corporelles
+2914|Constructions sur sol d’autrui|Dépréciations des immobilisations corporelles
+2915|Installations techniques, matériels et outillages industriels
+2918|Autres immobilisations corporelles|Dépréciations des immobilisations corporelles
+2931|Immobilisations corporelles en cours
+2932|Immobilisations incorporelles en cours
+2961|Titres de participation
+2962|Titres évalués par équivalence
+2966|Autres formes de participation
+2967|Créances rattachées à des participations
+2968|Créances rattachées à des sociétés en participation
+2971|Titres immobilisés autres que les titres immobilisés de l’activité de portefeuille (droit de propriété)
+2972|Titres immobilisés (droit de créance)
+2973|Titres immobilisés de l’activité de portefeuille
+2974|Prêts
+2975|Dépôts et cautionnements versés
+2976|Autres créances immobilisées
+3221|Combustibles
+3222|Produits d’entretien
+3223|Fournitures d’atelier et d’usine
+3224|Fournitures de magasin
+3225|Fournitures de bureau
+3261|Emballages perdus
+3265|Emballages récupérables non identifiables
+3267|Emballages à usage mixte
+3581|Déchets
+3585|Rebuts
+3586|Matières de récupération
+4011|Fournisseurs - Achats de biens et prestations de services
+4017|Fournisseurs - Retenues de garantie
+4041|Fournisseurs - Achats d’immobilisations
+4047|Fournisseurs d’immobilisations - Retenues de garantie
+4081|Fournisseurs
+4084|Fournisseurs d’immobilisations
+4088|Fournisseurs - Intérêts courus
+4091|Fournisseurs - Avances et acomptes versés sur commandes
+4096|Fournisseurs - Créances pour emballages et matériel à rendre
+4097|Fournisseurs - Autres avoirs
+4098|Rabais, remises, ristournes à obtenir et autres avoirs non encore reçus
+4111|Clients - Ventes de biens ou de prestations de services
+4117|Clients - Retenues de garantie
+4181|Clients - Factures à établir
+4188|Clients - Intérêts courus
+4191|Clients - Avances et acomptes reçus sur commandes
+4196|Clients - Dettes sur emballages et matériels consignés
+4197|Clients - Autres avoirs
+4198|Rabais, remises, ristournes à accorder et autres avoirs à établir
+4246|Réserve spéciale
+4248|Comptes courants
+4282|Dettes provisionnées pour congés à payer
+4284|Dettes provisionnées pour participation des salariés aux résultats
+4286|Autres charges à payer|Personnel - Charges à payer
+4382|Charges sociales sur congés à payer
+4386|Autres charges à payer|Organismes sociaux - Charges à payer
+4421|Prélèvements à la source (Impôt sur le revenu)
+4422|Prélèvements forfaitaires non libératoires
+4423|Retenues et prélèvements sur les distributions
+4452|TVA due intracommunautaire
+4455|Taxes sur le chiffre d’affaires à décaisser
+4456|Taxes sur le chiffre d’affaires déductibles
+4457|Taxes sur le chiffre d’affaires collectées
+4458|Taxes sur le chiffre d’affaires à régulariser ou en attente
+4481|État - Charges à Payer
+4482|État - Produits à recevoir
+4551|Principal|Associés - Comptes courants
+4558|Intérêts courus|Associés - Comptes courants
+4561|Associés - Comptes d’apport en société
+4562|Apporteurs - Capital appelé, non versé
+4563|Associés - Versements reçus sur augmentation de capital
+4564|Associés - Versements anticipés
+4566|Actionnaires défaillants
+4567|Associés - Capital à rembourser
+4581|Opérations courantes
+4588|Intérêts courus|Associés - Opérations faites en commun et en GIE
+4741|Différences d’évaluation sur instruments financiers à terme - Actif
+4742|Différences d’évaluation sur jetons détenus - Actif
+4746|Différences d’évaluation de jetons sur des passifs - Actif
+4751|Différences d’évaluation sur instruments financiers à terme - Passif
+4752|Différences d’évaluation sur jetons détenus - Passif
+4756|Différences d’évaluation de jetons sur des passifs - Passif
+4761|Diminution des créances
+4762|Augmentation des dettes
+4768|Différences compensées par couverture de change|Différence de conversion - Actif
+4771|Augmentation des créances
+4772|Diminution des dettes
+4778|Différences compensées par couverture de change|Différences de conversion - Passif
+4781|Mali de fusion sur actif circulant
+4871|Produits constatés d’avance sur jetons émis
+4886|Charges
+4887|Produits
+4951|Comptes du groupe
+4955|Comptes courants des associés
+4958|Opérations faites en commun et en GIE
+4962|Créances sur cessions d’immobilisations
+4965|Créances sur cessions de valeurs mobilières de placement
+4967|Autres comptes débiteurs
+5021|Actions destinées à être attribuées aux employés et affectées à des plans déterminés
+5022|Actions disponibles pour être attribuées aux employés ou pour la régularisation des cours de bourse
+5031|Titres cotés|Actions
+5035|Titres non cotés|Actions
+5061|Titres cotés|Obligations
+5065|Titres non cotés|Obligations
+5081|Autres valeurs mobilières
+5082|Bons de souscription
+5088|Intérêts courus sur obligations, bons et valeurs assimilés
+5111|Coupons échus à l’encaissement
+5112|Chèques à encaisser
+5113|Effets à l’encaissement
+5114|Effets à l’escompte
+5121|Comptes en euros
+5124|Comptes en devises
+5181|Intérêts courus à payer
+5188|Intérêts courus à recevoir
+5191|Crédit de mobilisation de créances commerciales
+5193|Mobilisation de créances nées à l’étranger
+5198|Intérêts courus sur concours bancaires courants
+5903|Actions|Dépréciations des valeurs mobilières de placement
+5904|Autres titres conférant un droit de propriété
+5906|Obligations|Dépréciations des valeurs mobilières de placement
+5908|Autres valeurs mobilières de placement et créances assimilées
+6021|Matières consommables
+6022|Fournitures consommables
+6026|Emballages
+6031|Variation des stocks de matières premières et fournitures
+6032|Variation des stocks des autres approvisionnements
+6037|Variation des stocks de marchandises
+6061|Fournitures non stockables (eau, énergie, etc.)
+6063|Fournitures d’entretien et de petit équipement
+6064|Fournitures administratives
+6068|Autres matières et fournitures
+6098|Rabais, remises et ristournes non affectés
+6122|Crédit-bail mobilier
+6125|Crédit-bail immobilier
+6132|Locations immobilières
+6135|Locations mobilières
+6152|Entretien et réparation sur biens immobiliers
+6155|Entretien et réparation sur biens mobiliers
+6156|Maintenance
+6161|Multirisques
+6162|Assurance obligatoire dommage construction
+6163|Assurance - transport
+6164|Risques d’exploitation
+6165|Insolvabilité clients
+6181|Documentation générale
+6183|Documentation technique
+6185|Frais de colloques, séminaires, conférences
+6211|Personnel intérimaire
+6214|Personnel détaché ou prêté à l’entité
+6221|Commissions et courtages sur achats
+6222|Commissions et courtages sur ventes
+6224|Rémunérations des transitaires
+6225|Rémunérations d’affacturage
+6226|Honoraires
+6227|Frais d’actes et de contentieux
+6228|Divers|Rémunérations d’intermédiaires et honoraires
+6231|Annonces et insertions
+6232|Échantillons
+6233|Foires et expositions
+6234|Cadeaux à la clientèle
+6235|Primes
+6236|Catalogues et imprimés
+6237|Publications
+6238|Divers (pourboires, dons courants)
+6241|Transports sur achats
+6242|Transports sur ventes
+6243|Transports entre établissements ou chantiers
+6244|Transports administratifs
+6247|Transports collectifs du personnel
+6248|Divers|Transports de biens et transports collectifs du personnel
+6251|Voyages et déplacements
+6255|Frais de déménagement
+6256|Missions
+6257|Réceptions
+6271|Frais sur titres (achat, vente, garde)
+6272|Commissions et frais sur émission d’emprunts
+6275|Frais sur effets
+6276|Location de coffres
+6278|Autres frais et commissions sur prestations de services
+6281|Concours divers (cotisations)
+6284|Frais de recrutement de personnel
+6311|Taxe sur les salaires
+6314|Cotisation pour défaut d’investissement obligatoire dans la construction
+6318|Autres|Impôts, taxes et versements assimilés sur rémunérations (administrations des impôts)
+6331|Versement de transport
+6332|Allocations logement
+6333|Contribution unique des employeurs à la formation professionnelle
+6334|Participation des employeurs à l’effort de construction
+6335|Versements libératoires ouvrant droit à l’exonération de la taxe d’apprentissage
+6338|Autres|Impôts, taxes et versements assimilés sur rémunérations (autres organismes)
+6351|Impôts directs (sauf impôts sur les bénéfices)
+6352|Taxe sur le chiffre d’affaires non récupérables
+6353|Impôts indirects
+6354|Droits d’enregistrement et de timbre
+6358|Autres droits
+6371|Contribution sociale de solidarité à la charge des sociétés
+6372|Taxes perçues par les organismes publics internationaux
+6374|Impôts et taxes exigibles à l’étranger
+6378|Taxes diverses
+6411|Salaires, appointements
+6412|Congés payés
+6413|Primes et gratifications
+6414|Indemnités et avantages divers
+6415|Supplément familial
+6451|Cotisations à l’Urssaf
+6452|Cotisations aux mutuelles
+6453|Cotisations aux caisses de retraites
+6454|Cotisations à Pôle emploi
+6458|Cotisations aux autres organismes sociaux
+6471|Prestations directes
+6472|Versements au comité social et économique
+6474|Versements aux autres œuvres sociales
+6475|Médecine du travail, pharmacie
+6511|Redevances pour concessions, brevets, licences, marques, procédés, solutions informatiques|Redevances pour concessions, brevets, licences, marques, procédés, solutions informatiques, droits et valeurs similaires
+6516|Droits d’auteur et de reproduction|Redevances pour concessions, brevets, licences, marques, procédés, solutions informatiques, droits et valeurs similaires
+6518|Autres droits et valeurs similaires|Redevances pour concessions, brevets, licences, marques, procédés, solutions informatiques, droits et valeurs similaires
+6541|Créances de l’exercice
+6544|Créances des exercices antérieurs
+6551|Quote-part de bénéfice transférée - comptabilité du gérant
+6555|Quote-part de perte supportée - comptabilité des associés non gérants
+6581|Pénalités sur marchés (et dédits payés sur achats et ventes)
+6582|Pénalités, amendes fiscales et pénales
+6583|Malis provenant de clauses d’indexation
+6584|Lots|Pénalités et autres charges
+6588|Opérations de constitution ou liquidation des fiducies|Pénalités et autres charges
+6611|Intérêts des emprunts et dettes
+6612|Charges de la fiducie, résultat de la période
+6615|Intérêts des comptes courants et des dépôts créditeurs
+6616|Intérêts bancaires et sur opérations de financement (escompte…)
+6617|Intérêts des obligations cautionnées
+6618|Intérêts des autres dettes
+6671|Valeurs comptables des immobilisations financières cédées
+6672|Charges nettes sur cessions de titres immobilisés de l’activité de portefeuille
+6673|Charges nettes sur cessions de valeurs mobilières de placement
+6674|Charges nettes sur cessions de jetons
+6683|Mali provenant du rachat par l’entité d’actions et obligations émises par elle-même
+6811|Dotations aux amortissements sur immobilisations incorporelles et corporelles
+6815|Dotations aux provisions d’exploitation
+6816|Dotations pour dépréciations des immobilisations incorporelles et corporelles
+6817|Dotations pour dépréciations des actifs circulants
+6861|Dotations aux amortissements des primes de remboursement des emprunts
+6862|Dotations aux amortissements des frais d’émission des emprunts
+6865|Dotations aux provisions financières
+6866|Dotations pour dépréciation des éléments financiers
+6871|Dotations aux amortissements exceptionnels des immobilisations
+6872|Dotations aux provisions réglementées (immobilisations)
+6873|Dotations aux provisions réglementées (stocks)
+6874|Dotations aux autres provisions réglementées
+6875|Dotations aux provisions exceptionnelles
+6876|Dotations pour dépréciations exceptionnelles
+6951|Impôts dus en France
+6952|Contribution additionnelle à l’impôt sur les bénéfices
+6954|Impôts dus à l’étranger
+6981|Intégration fiscale - Charges
+6989|Intégration fiscale - Produits
+7081|Produits des services exploités dans l’intérêt du personnel
+7082|Commissions et courtages
+7083|Locations diverses
+7084|Mise à disposition de personnel facturée
+7085|Ports et frais accessoires facturés
+7086|Bonis sur reprises d’emballages consignés
+7087|Bonifications obtenues des clients et primes sur ventes
+7088|Autres produits d’activités annexes (cessions d’approvisionnements)
+7091|Rabais, remises et ristournes accordés sur ventes de produits finis
+7092|Rabais, remises et ristournes accordés sur ventes de produits intermédiaires
+7094|Rabais, remises et ristournes accordés sur travaux
+7095|Rabais, remises et ristournes accordés sur études
+7096|Rabais, remises et ristournes accordés sur prestations de services
+7097|Rabais, remises et ristournes accordés sur ventes de marchandises
+7098|Rabais, remises et ristournes accordés sur produits des activités annexes
+7133|Variation des en-cours de production de biens
+7134|Variation des en-cours de production de services
+7135|Variation des stocks de produits
+7511|Redevances pour concessions, brevets, licences, marques, procédés, solutions informatiques|Redevances pour concessions, brevets, licences, marques, procédés, solutions informatiques, droits et valeurs similaires
+7516|Droits d’auteur et de reproduction|Redevances pour concessions, brevets, licences, marques, procédés, solutions informatiques, droits et valeurs similaires
+7518|Autres droits et valeurs similaires|Redevances pour concessions, brevets, licences, marques, procédés, solutions informatiques, droits et valeurs similaires
+7551|Quote-part de perte transférée - comptabilité du gérant
+7555|Quote-part de bénéfice attribuée - comptabilité des associés non-gérants
+7581|Dédits et pénalités perçus sur achats et ventes
+7582|Libéralités reçues
+7583|Rentrées sur créances amorties
+7584|Dégrèvements d’impôts autres qu’impôts sur les bénéfices
+7585|Bonis provenant de clauses d’indexation
+7586|Lots|Indemnités et autres produits
+7587|Indemnités d’assurance
+7588|Opérations de constitution ou liquidation des fiducies|Indemnités et autres produits
+7611|Revenus des titres de participation
+7612|Produits de la fiducie, résultat de la période
+7616|Revenus sur autres formes de participation
+7617|Revenus des créances rattachées à des participations
+7621|Revenus des titres immobilisés
+7626|Revenus des prêts
+7627|Revenus des créances immobilisées
+7631|Revenus des créances commerciales
+7638|Revenus des créances diverses
+7671|Produits des cessions d’immobilisations financières
+7672|Produits nets sur cessions de titres immobilisés de l’activité de portefeuille
+7673|Produits nets sur cessions de valeurs mobilières de placement
+7674|Produits nets sur cessions de jetons
+7683|Bonis provenant du rachat par l’entreprise d’actions et d’obligations émises par elle-même
+7811|Reprises sur amortissements des immobilisations incorporelles et corporelles
+7815|Reprises sur provisions d’exploitation
+7816|Reprises sur dépréciations des immobilisations incorporelles et corporelles
+7817|Reprises sur dépréciations des actifs circulants
+7865|Reprises sur provisions financières
+7866|Reprises sur dépréciations des éléments financiers
+7872|Reprises sur provisions réglementées (immobilisations)
+7873|Reprises sur provisions réglementées (stocks)
+7874|Reprises sur autres provisions réglementées
+7875|Reprises sur provisions exceptionnelles
+7876|Reprises sur dépréciations exceptionnelles`,
+5:`10131|Capital non amorti
+10132|Capital amorti
+16711|Titres participatifs montant principal
+16712|Autres fonds non remboursables montant principal
+20121|Frais de prospection
+20122|Frais de publicité
+21511|Installations complexes spécialisées sur sol propre
+21514|Installations complexes spécialisées sur sol d’autrui
+21531|Installations à caractère spécifique sur sol propre
+21534|Installations à caractère spécifique sur sol d’autrui
+27682|Intérêts courus sur titres immobilisés (droit de créance)
+27684|Intérêts courus sur prêts
+27685|Intérêts courus sur dépôts et cautionnements
+27688|Intérêts courus sur créances diverses
+28187|Amortissement du mali de fusion sur actifs corporels
+29081|Dépréciation du mali de fusion sur actifs incorporels
+29187|Dépréciation du mali de fusion sur actifs corporels
+40971|Fournisseurs d’exploitation
+40974|Fournisseurs d’immobilisations
+44551|TVA à décaisser
+44558|Taxes assimilées à la TVA|Taxes sur le chiffre d’affaires à décaisser
+44562|TVA sur immobilisations
+44563|TVA transférée par d’autres entités
+44566|TVA sur autres biens et services
+44567|Crédit de TVA à reporter
+44568|Taxes assimilées à la TVA|Taxes sur le chiffre d’affaires déductibles
+44571|TVA collectée
+44578|Taxes assimilées à la TVA|Taxes sur le chiffre d’affaires collectées
+44581|Acomptes - Régime simplifié d’imposition
+44583|Remboursement de taxes sur le chiffre d’affaires demandé
+44584|TVA récupérée d’avance
+44586|Taxes sur le chiffre d’affaires sur factures non parvenues
+44587|Taxes sur le chiffre d’affaires sur factures à établir
+44811|Charges fiscales sur congés à payer
+44812|Charges à payer
+45611|Apports en nature
+45615|Apports en numéraire
+45621|Actionnaires - Capital souscrit et appelé, non versé
+45625|Associés - Capital appelé, non versé
+60221|Combustibles
+60222|Produits d’entretien
+60223|Fournitures d’atelier et d’usine
+60224|Fournitures de magasin
+60225|Fourniture de bureau
+60261|Emballages perdus
+60262|Malis sur emballage
+60265|Emballages récupérables non identifiables
+60267|Emballages à usage mixte
+61636|sur achats
+61637|sur ventes
+61638|sur autres biens
+63511|Contribution économique territoriale
+63512|Taxes foncières
+63513|Autres impôts locaux
+63514|Taxe sur les véhicules des sociétés
+63541|Droits de mutation
+66116|Intérêts des emprunts et dettes assimilées
+66117|Intérêts des dettes rattachées à des participations
+66181|Intérêts des dettes commerciales
+66188|Intérêts des dettes diverses
+68111|Immobilisations incorporelles et frais d’établissement
+68112|Immobilisations corporelles|Dotations aux amortissements sur immobilisations incorporelles et corporelles
+68161|Immobilisations incorporelles|Dotations pour dépréciations des immobilisations incorporelles et corporelles
+68162|Immobilisations corporelles|Dotations pour dépréciations des immobilisations incorporelles et corporelles
+68173|Stocks et en-cours|Dotations pour dépréciations des actifs circulants
+68174|Créances|Dotations pour dépréciations des actifs circulants
+68662|Immobilisations financières|Dotations pour dépréciation des éléments financiers
+68665|Valeurs mobilières de placement|Dotations pour dépréciation des éléments financiers
+68725|Amortissements dérogatoires|Dotations aux provisions réglementées (immobilisations)
+71331|Produits en cours
+71335|Travaux en cours
+71341|Études en cours
+71345|Prestations de services en cours
+71351|Produits intermédiaires
+71355|Produits finis
+71358|Produits résiduels
+78111|Immobilisations incorporelles|Reprises sur amortissements des immobilisations incorporelles et corporelles
+78112|Immobilisations corporelles|Reprises sur amortissements des immobilisations incorporelles et corporelles
+78161|Immobilisations incorporelles|Reprises sur dépréciations des immobilisations incorporelles et corporelles
+78162|Immobilisations corporelles|Reprises sur dépréciations des immobilisations incorporelles et corporelles
+78173|Stocks et en-cours|Reprises sur dépréciations des actifs circulants
+78174|Créances|Reprises sur dépréciations des actifs circulants
+78662|Immobilisations financières|Reprises sur dépréciations des éléments financiers
+78665|Valeurs mobilières de placement|Reprises sur dépréciations des éléments financiers
+78725|Amortissements dérogatoires|Reprises sur provisions réglementées (immobilisations)`};
+const L=[{k:2,n:"Échauffement",d:"Comptes à 2 chiffres"},{k:3,n:"Initié",d:"Comptes à 3 chiffres"},{k:4,n:"Intermédiaire",d:"Comptes à 4 chiffres"},{k:5,n:"Expert",d:"Comptes à 5 chiffres"}];
+const REV={n:"Révision",d:"Tes 150 comptes les moins bien réussis"};
+const C=[["capitaux"],["immobilisation"],["stock"],["tiers"],["financier","tresorerie"],["charge"],["produit"]];
+const CN=["Comptes de capitaux","Comptes d’immobilisations","Comptes de stocks et en-cours","Comptes de tiers","Comptes financiers (ou de trésorerie)","Comptes de charges","Comptes de produits"];
+const norm=s=>s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9 ]+/g," ").replace(/\s+/g," ").trim();
+function dice(a,b){a=norm(a);b=norm(b);if(a===b)return 1;if(a.length<2||b.length<2)return 0;const g=s=>{const m={};for(let i=0;i<s.length-1;i++){const x=s.slice(i,i+2);m[x]=(m[x]||0)+1}return m};const x=g(a),y=g(b);let c=0;for(const k in x)if(y[k])c+=Math.min(x[k],y[k]);return 2*c/(a.length+b.length-2)}
+const A={},ALL=[];
+for(const k in D){A[k]=D[k].split("\n").map(l=>{const p=l.split("|");return{n:p[0],t:p[1],h:p[2]||"",k:+k}});ALL.push(...A[k])}
+const sig=a=>norm(a.t)+"#"+norm(a.h);
+ALL.forEach(a=>a.same=ALL.filter(b=>b.k===a.k&&sig(b)===sig(a)));
+const label=a=>a.t+(a.h?` (${a.h})`:"");
+const dstr=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const pct=(o,t)=>t?Math.round(100*o/t):null;
+const rt=a=>{const r=S.a[a.n];return (r[0]+r[2])/(r[1]+r[3])};
+const nb=a=>S.a[a.n][1]+S.a[a.n][3];
+
+/* Mémoire des statistiques : stockage privé du viewer, avec copie locale */
+let S={a:{},d:{},ac:[]},dbDoc=null,timer=null,saving=false;
+const fix=j=>({a:j.a||{},d:j.d||{},ac:j.ac||[]});
+const ls={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+async function initStore(){
+  try{const u=await claude.use("user"),db=await claude.use("db");
+    if(u&&db){const id=await u.id();if(id){dbDoc=db.collection("data/users/"+id).doc("stats");const s=await dbDoc.get();
+      if(s.exists){const d=s.data();if(d&&d.a){S=fix(d);return}}}}}catch(e){}
+  try{const j=JSON.parse(ls.get("pcgS")||"null");if(j&&j.a)S=fix(j)}catch(e){}
+}
+async function flush(){if(!dbDoc)return;if(saving){timer=setTimeout(flush,800);return}saving=true;try{await dbDoc.set({a:S.a,d:S.d,ac:S.ac})}catch(e){}saving=false}
+function save(){ls.set("pcgS",JSON.stringify(S));clearTimeout(timer);timer=setTimeout(flush,800)}
+document.addEventListener("visibilitychange",()=>{if(document.hidden){clearTimeout(timer);flush()}});
+function record(a,mode,good){
+  const r=S.a[a.n]||(S.a[a.n]=[0,0,0,0]),i=mode==="nom"?0:2;r[i+1]++;if(good)r[i]++;
+  const k=dstr(new Date());let d=S.d[k];if(!d||Array.isArray(d))d=S.d[k]={};
+  const e=d[a.k]||(d[a.k]=[0,0]);e[1]++;if(good)e[0]++;save();
+}
+const dayVal=(v,k)=>{if(!v)return[0,0];if(Array.isArray(v))return k==="all"?v:[0,0];if(k!=="all")return v[k]||[0,0];let o=0,t=0;for(const x in v){o+=v[x][0];t+=v[x][1]}return[o,t]};
+const ready=initStore();
+function expand(v,a){const nt=norm(a.t);let x=" "+norm(v)+" ";S.ac.forEach(c=>{if(c.s&&c.d&&nt.includes(norm(c.d)))x=x.split(" "+norm(c.s)+" ").join(" "+norm(c.d)+" ")});return x.trim()}
+const sigles=a=>S.ac.filter(c=>c.d&&norm(a.t).includes(norm(c.d))).map(c=>c.s);
+
+const app=document.getElementById("app");let tries=0,g=null,fs={k:"all",dir:"desc",n:60},rv={k:"all",n:80};
+const TIME=40,MEM=40;
+const nav=on=>`<nav class="nav">${[["menu","Jouer"],["revs","Révisions"],["acr","Acronymes"],["stats","Stats"]].map(([k,n])=>`<button class="${on===k?"on":""}" data-go="${k}">${n}</button>`).join("")}</nav>`;
+const wire=()=>app.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>({menu,revs,acr,stats})[b.dataset.go]());
+const chips=(cur,fn)=>{const c=(k,n)=>`<button class="chip ${cur===k?"on":""}" data-k="${k}">${n}</button>`;return `<div class="chips">${c("all","Tous")}${L.map(l=>c(l.k,l.n)).join("")}</div>`};
+const wireChips=(set,fn)=>app.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{set(b.dataset.k==="all"?"all":+b.dataset.k);fn()});
+
+function classes(){
+  const i=Math.floor(Math.random()*7);tries=0;
+  app.innerHTML=`<h1>Avant de jouer</h1><p class="sub">Quel est l’intitulé de la classe ${i+1} du plan comptable ?</p><div class="card"><input id="c" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Classe ${i+1}"><p class="msg" id="msg"></p><button class="btn" id="go">Vérifier</button></div>`;
+  const el=document.getElementById("c");
+  const check=()=>{const v=norm(el.value);if(C[i].some(w=>v.includes(w)))return menu();
+    tries++;el.classList.add("ko");let m="Ce n’est pas ça, réessaie.";if(tries>=3)m+=` Indice : ${CN[i].toLowerCase()}.`;document.getElementById("msg").textContent=m};
+  document.getElementById("go").onclick=check;
+  el.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();check()}});el.focus();
+}
+function lv(k){let o=0,t=0;A[k].forEach(a=>{const r=S.a[a.n];if(r){o+=r[0]+r[2];t+=r[1]+r[3]}});return pct(o,t)}
+const revPool=()=>ALL.filter(a=>S.a[a.n]&&rt(a)<=.9).sort((a,b)=>rt(a)-rt(b)||nb(b)-nb(a)).slice(0,100);
+function menu(){
+  const played=Object.keys(S.a).length,off=played<20||revPool().length<10;
+  app.innerHTML=nav("menu")+`<h1>Plan comptable</h1><p class="sub">Choisis un niveau. Les questions s’enchaînent sans fin, ${TIME} secondes par question.</p><div class="list">${L.map(l=>{const r=lv(l.k);return `<button class="lvl" data-k="${l.k}"><span class="t">${l.n}</span><span class="b">${r===null?"":"Réussite "+r+" %"}</span><span class="d">${l.d}</span></button>`}).join("")}<button class="lvl" data-k="0" ${off?"disabled":""}><span class="t">${REV.n}</span><span class="b"></span><span class="d">${off?"Disponible après 20 comptes joués":REV.d}</span></button></div>`;
+  app.querySelectorAll(".lvl").forEach(b=>b.onclick=()=>start(+b.dataset.k));wire();
+}
+async function start(k){
+  await ready;
+  g={k,l:k?L.find(l=>l.k===k):REV,pool:k?A[k]:revPool(),recent:[],score:0,total:0,wrong:[]};play();
+}
+function pick(){
+  const ex=new Set(g.recent);let c=g.pool.filter(a=>!ex.has(a.n));if(!c.length)c=g.pool;
+  const a=c[Math.floor(Math.random()*c.length)];g.recent.push(a.n);
+  if(g.recent.length>Math.min(MEM,g.pool.length-1))g.recent.shift();return a;
+}
+function play(){
+  const a=pick(),mode=Math.random()<.5?"nom":"num",nom=mode==="nom";g.done=false;clearInterval(g.iv);
+  app.innerHTML=`<div class="top"><span>${g.l.n}</span><span>${g.score} / ${g.total}</span><button class="ghost sm" id="stop">Terminer</button></div><div class="tm"><i id="tm"></i></div><div class="card" id="card"><p class="lab">${nom?"Quel est l’intitulé de ce compte ?":"Quel est le numéro de ce compte ?"}</p><p class="big ${nom?"num":""}">${nom?a.n:label(a)}</p><input id="ans" ${nom?"":'inputmode="numeric"'} autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${nom?"Intitulé":"Numéro"}"><div id="fb"></div><div class="acts"><button class="btn" id="ok">Valider</button><button class="ghost" id="skip">Passer</button><span class="lab" id="tt" style="margin-left:auto"></span></div></div>`;
+  const ans=document.getElementById("ans"),ok=document.getElementById("ok"),skip=document.getElementById("skip"),card=document.getElementById("card");
+  const submit=(sk,to)=>{clearInterval(g.iv);const v=ans.value.trim();
+    const good=!sk&&(nom?Math.max(dice(v,a.t),dice(expand(v,a),a.t))>=.72:a.same.some(b=>b.n===v.replace(/\s/g,"")));
+    g.total++;if(good)g.score++;else g.wrong.push(a);record(a,mode,good);
+    const alt=!nom&&a.same.length>1?`<br>Numéros acceptés : ${a.same.map(b=>b.n).join(", ")}`:"";
+    card.classList.add(good?"ok":"ko");
+    document.getElementById("fb").innerHTML=`<div class="fb ${good?"ok":"ko"}"><div class="v">${good?"✓ Correct":to?"✗ Temps écoulé":"✗ Incorrect"}</div>${a.n} ${label(a)}${alt}</div>`;
+    ans.disabled=true;skip.style.display="none";g.done=true;ok.textContent="Suivant";ok.focus()};
+  ok.onclick=()=>g.done?play():submit(false);
+  skip.onclick=()=>submit(true);
+  document.getElementById("stop").onclick=end;
+  ans.addEventListener("keydown",e=>{if(e.key==="Enter"&&!g.done){e.preventDefault();submit(false)}});
+  const t0=Date.now(),tm=document.getElementById("tm"),tt=document.getElementById("tt");
+  g.iv=setInterval(()=>{const l=Math.max(0,TIME-(Date.now()-t0)/1000);tm.style.width=l/TIME*100+"%";tt.textContent=Math.ceil(l)+" s";if(l<=0)submit(true,true)},200);
+  ans.focus();
+}
+function end(){
+  clearInterval(g.iv);if(!g.total)return menu();
+  const w=[...new Set(g.wrong)];
+  app.innerHTML=`<h1>${g.l.n}</h1><p class="sub">Séance terminée</p><div class="card"><p class="score">${g.score} / ${g.total}</p>${w.length?`<p class="lab">À retravailler</p>${w.map(a=>`<p class="err"><b>${a.n}</b> ${label(a)}</p>`).join("")}`:`<p>Aucune erreur sur cette séance.</p>`}<div class="acts"><button class="btn" id="again">Reprendre</button><button class="ghost" id="back">Menu</button></div></div>`;
+  document.getElementById("again").onclick=()=>start(g.k);
+  document.getElementById("back").onclick=menu;
+}
+function stats(){
+  const sel=ALL.filter(a=>fs.k==="all"||a.k===fs.k),seen=sel.filter(a=>S.a[a.n]);
+  let ok=0,tot=0;seen.forEach(a=>{const r=S.a[a.n];ok+=r[0]+r[2];tot+=r[1]+r[3]});
+  const rows=seen.slice().sort((a,b)=>(fs.dir==="desc"?rt(b)-rt(a):rt(a)-rt(b))||(a.n<b.n?-1:1));
+  const days=[];for(let i=29;i>=0;i--){const d=new Date(Date.now()-i*864e5);days.push({d,v:dayVal(S.d[dstr(d)],fs.k)})}
+  const mx=Math.max(1,...days.map(x=>x.v[1]));
+  app.innerHTML=nav("stats")+`<h1>Statistiques</h1><p class="sub">Ta progression, enregistrée d’une séance à l’autre.</p>${chips(fs.k)}<div class="card"><div class="kpi"><div><b>${tot?pct(ok,tot)+" %":"–"}</b><span>de réussite</span></div><div><b>${tot}</b><span>réponses</span></div><div><b>${ok} / ${tot-ok}</b><span>Win / Lose</span></div></div><p class="lab">${seen.length} comptes vus sur ${sel.length}</p><p class="lab">Réponses par jour, 30 derniers jours</p><div class="days">${days.map((x,i)=>{const p=x.v[1]?pct(x.v[0],x.v[1]):0;return `<div class="day" data-i="${i}"><i style="height:${x.v[1]/mx*100}%;${x.v[1]?`min-height:2px;background:linear-gradient(to top,var(--ok) ${p}%,var(--ko) ${p}%)`:""}"></i><small>${x.d.getDate()}</small></div>`}).join("")}</div><p class="tip" id="tip">Touche une barre pour voir le détail du jour.</p>
+  <button class="ghost sm" id="dir">${fs.dir==="desc"?"Plus connus d’abord":"Moins connus d’abord"}</button>
+  ${rows.length?rows.slice(0,fs.n).map(a=>{const r=S.a[a.n],f=(o,t)=>t?pct(o,t)+" % ("+t+")":"–";return `<div class="srow"><span class="sn">${a.n}</span><span>${label(a)}</span><span class="sp">${pct(r[0]+r[2],r[1]+r[3])} %</span><small>Intitulé ${f(r[0],r[1])} · Numéro ${f(r[2],r[3])}</small></div>`}).join(""):`<p class="sub">Aucun compte joué pour l’instant.</p>`}
+  ${rows.length>fs.n?`<button class="link" id="more">Afficher la suite</button>`:""}</div>`;
+  wire();wireChips(k=>{fs.k=k;fs.n=60},stats);
+  const tip=document.getElementById("tip");
+  app.querySelectorAll(".day").forEach(el=>{const show=()=>{const x=days[+el.dataset.i],[o,t]=x.v;tip.textContent=x.d.toLocaleDateString("fr-FR",{day:"numeric",month:"long"})+" : "+(t?`${t} réponses, ${pct(o,t)} % de réussite (${o} gagnées, ${t-o} perdues)`:"aucune réponse")};el.onclick=show;el.onmouseenter=show});
+  document.getElementById("dir").onclick=()=>{fs.dir=fs.dir==="desc"?"asc":"desc";stats()};
+  const m=document.getElementById("more");if(m)m.onclick=()=>{fs.n+=60;stats()};
+}
+function revs(){
+  app.innerHTML=nav("revs")+`<h1>Révisions</h1><p class="sub">Les ${ALL.length} comptes du PCG 2026.</p><input id="q" placeholder="Rechercher un numéro, un intitulé ou un sigle" style="margin-bottom:12px">${chips(rv.k)}<div id="rl"></div>`;
+  wire();wireChips(k=>{rv.k=k;rv.n=80},revs);
+  const q=document.getElementById("q"),rl=document.getElementById("rl");
+  const draw=()=>{const s=norm(q.value);const rows=ALL.filter(a=>(rv.k==="all"||a.k===rv.k)&&(!s||norm(a.n+" "+label(a)+" "+sigles(a).join(" ")).includes(s)));
+    rl.innerHTML=rows.slice(0,rv.n).map(a=>{const r=S.a[a.n],sg=sigles(a);return `<div class="srow"><span class="sn">${a.n}</span><span>${label(a)}</span><span class="sp">${r?pct(r[0]+r[2],r[1]+r[3])+" %":""}</span>${r||sg.length?`<small>${r?`Intitulé ${pct(r[0],r[1])??"–"} % · Numéro ${pct(r[2],r[3])??"–"} %`:""}${sg.length?` <span class="ac">Sigle : ${sg.join(", ")}</span>`:""}</small>`:""}</div>`}).join("")+(rows.length>rv.n?`<button class="link" id="more">Afficher la suite</button>`:"");
+    const m=document.getElementById("more");if(m)m.onclick=()=>{rv.n+=80;draw()}};
+  q.oninput=()=>{rv.n=80;draw()};draw();
+}
+function acr(msg=""){
+  app.innerHTML=nav("acr")+`<h1>Acronymes</h1><p class="sub">Un sigle est accepté comme réponse quand sa définition fait partie de l’intitulé du compte.</p><div class="card add"><input id="s" placeholder="Sigle (ex. VMP)" autocomplete="off"><input id="d" placeholder="Définition (ex. Valeurs mobilières de placement)" autocomplete="off"><button class="btn" id="add">Ajouter</button><p class="msg">${msg}</p></div>${S.ac.map((c,i)=>`<div class="srow"><span class="sn">${c.s}</span><span>${c.d}</span><button class="ghost sm" data-i="${i}">Supprimer</button></div>`).join("")||`<p class="sub">Aucun acronyme pour l’instant.</p>`}`;
+  wire();
+  document.getElementById("add").onclick=()=>{const s=document.getElementById("s").value.trim(),d=document.getElementById("d").value.trim();
+    if(!s||!d)return acr("Remplis le sigle et sa définition.");
+    S.ac.push({s,d});save();acr(ALL.some(a=>norm(a.t).includes(norm(d)))?"":"Enregistré, mais aucun intitulé ne contient cette définition.")};
+  app.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>{S.ac.splice(+b.dataset.i,1);save();acr()});
+}
+classes();
+</script></body></html>
